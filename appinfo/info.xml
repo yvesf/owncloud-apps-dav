@@ -1,14 +1,14 @@
 <?xml version="1.0"?> 
 <info>
-	<id>alldav</id>
-	<name>AllDAV</name>
+	<id>dav</id>
+	<name>DAV</name>
 	<licence>AGPL</licence>
 	<author>Yves Fischer</author>
 	<require>6.00</require>
 	<shipped>false</shipped>
-	<description>DAV interface to both calendar and addressbook</description>
+	<description>WebDAV interface to calendar and addressbook</description>
 	<default_enable/>
 	<remote>
-		<alldav>appinfo/remote.php</alldav>
+		<dav>appinfo/remote.php</dav>
 	</remote>
 </info>
