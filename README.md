@@ -1,2 +1,2 @@
 # dav
-unifies calendar and contacts in owncloud 6 for use with davdroid.
+unifies calendar and contacts in owncloud 7 for use with davdroid.
