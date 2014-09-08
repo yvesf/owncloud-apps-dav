@@ -11,18 +11,18 @@ $RUNTIME_APPTYPES = array('authentication', 'logging');
 OC_App::loadApps($RUNTIME_APPTYPES);
 
 // Initialize Server
-$rootCollection = new Sabre_DAV_SimpleCollection('');
+$rootCollection = new \Sabre\DAV\SimpleCollection('');
 $server = new OC_Connector_Sabre_Server($rootCollection);
 $server->httpRequest = new OC_Connector_Sabre_Request();
 $server->setBaseUri($baseuri);
-$server->addPlugin(new Sabre_DAV_Auth_Plugin(new OC_Connector_Sabre_Auth(), 'ownCloud'));
-$server->addPlugin(new Sabre_DAVACL_Plugin());
-$server->addPlugin(new Sabre_DAV_Browser_Plugin(false)); // Show something in the Browser, but no upload
+$server->addPlugin(new \Sabre\DAV\Auth\Plugin(new OC_Connector_Sabre_Auth(), 'ownCloud'));
+$server->addPlugin(new \Sabre\DAVACL\Plugin());
+$server->addPlugin(new \Sabre\DAV\Browser\Plugin(false)); // Show something in the Browser, but no upload
 
 
 // principals
 $principalBackend = new OC_Connector_Sabre_Principal();
-$principalCollection = new Sabre_CalDAV_Principal_Collection($principalBackend);
+$principalCollection = new \Sabre\CalDAV\Principal\Collection($principalBackend);
 $principalCollection->disableListing = true; // Disable listing
 $rootCollection->addChild($principalCollection);
 
@@ -34,8 +34,8 @@ if (OCP\App::isEnabled('calendar')) {
     $calendarCollection = new OC_Connector_Sabre_CalDAV_CalendarRoot($principalBackend, $caldavBackend);
     $calendarCollection->disableListing = true; // Disable listening
     $rootCollection->addChild($calendarCollection);
-    $server->addPlugin(new Sabre_CalDAV_Plugin());
-    $server->addPlugin(new Sabre_CalDAV_ICSExportPlugin());
+    $server->addPlugin(new \Sabre\CalDAV\Plugin());
+    $server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
 }
 
 if (OCP\App::isEnabled('contacts')) {
@@ -48,7 +48,7 @@ if (OCP\App::isEnabled('contacts')) {
 
     $rootCollection->addChild($addressBookCollection);
     $server->addPlugin(new OCA\Contacts\CardDAV\Plugin());
-    $server->addPlugin(new Sabre_CardDAV_VCFExportPlugin());
+    $server->addPlugin(new \Sabre\CardDAV\VCFExportPlugin());
 }
 
 if(defined('DEBUG') && DEBUG) {
