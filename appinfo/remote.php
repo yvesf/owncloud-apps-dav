@@ -12,7 +12,7 @@ OC_App::loadApps($RUNTIME_APPTYPES);
 
 // Initialize Server
 $rootCollection = new \Sabre\DAV\SimpleCollection('');
-$server = new OC_Connector_Sabre_Server($rootCollection);
+$server = new \Sabre\DAV\Server($rootCollection);
 $server->httpRequest = new OC_Connector_Sabre_Request();
 $server->setBaseUri($baseuri);
 $server->addPlugin(new \Sabre\DAV\Auth\Plugin(new OC_Connector_Sabre_Auth(), 'ownCloud'));
@@ -21,7 +21,10 @@ $server->addPlugin(new \Sabre\DAV\Browser\Plugin(false)); // Show something in t
 
 
 // principals
-$principalBackend = new OC_Connector_Sabre_Principal();
+$principalBackend = new \OC\Connector\Sabre\Principal(
+	\OC::$server->getConfig(),
+	\OC::$server->getUserManager()
+);
 $principalCollection = new \Sabre\CalDAV\Principal\Collection($principalBackend);
 $principalCollection->disableListing = true; // Disable listing
 $rootCollection->addChild($principalCollection);
@@ -30,7 +33,7 @@ $rootCollection->addChild($principalCollection);
 if (OCP\App::isEnabled('calendar')) {
     require 'calendar/appinfo/app.php';
     // caldav backend
-    $caldavBackend    = new OC_Connector_Sabre_CalDAV();
+    $caldavBackend  = new OC_Connector_Sabre_CalDAV();
     $calendarCollection = new OC_Connector_Sabre_CalDAV_CalendarRoot($principalBackend, $caldavBackend);
     $calendarCollection->disableListing = true; // Disable listening
     $rootCollection->addChild($calendarCollection);
