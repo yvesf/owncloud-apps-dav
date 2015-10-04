@@ -10,12 +10,14 @@ OCP\App::checkAppEnabled('dav');
 $RUNTIME_APPTYPES = array('authentication', 'logging');
 OC_App::loadApps($RUNTIME_APPTYPES);
 
+$authBackend = new \OC\Connector\Sabre\Auth();
+
 // Initialize Server
 $rootCollection = new \Sabre\DAV\SimpleCollection('');
 $server = new \Sabre\DAV\Server($rootCollection);
-$server->httpRequest = new OC_Connector_Sabre_Request();
+$server->httpRequest->setUrl(\OC::$server->getRequest()->getRequestUri());
 $server->setBaseUri($baseuri);
-$server->addPlugin(new \Sabre\DAV\Auth\Plugin(new OC_Connector_Sabre_Auth(), 'ownCloud'));
+$server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, 'ownCloud'));
 $server->addPlugin(new \Sabre\DAVACL\Plugin());
 $server->addPlugin(new \Sabre\DAV\Browser\Plugin(false)); // Show something in the Browser, but no upload
 
